@@ -5,12 +5,13 @@ import time
 
 # 配置日志
 logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 # 创建 KafkaProducer 实例（在应用生命周期内复用）
 producer = KafkaProducer(
-    bootstrap_servers='127.0.0.1:9092', 
+    bootstrap_servers='localhost:9092',
     sasl_mechanism="PLAIN",
     security_protocol="SASL_PLAINTEXT",
     sasl_plain_username="jc",  # Kafka 配置中的用户名
@@ -22,6 +23,7 @@ producer = KafkaProducer(
     batch_size=16384,  # 批量发送的大小
     linger_ms=10  # 消息发送的延迟时间
 )
+
 
 def send_message(producer, topic, message):
     """发送消息"""
@@ -41,18 +43,21 @@ def send_message(producer, topic, message):
             try:
                 future = producer.send(topic, message)
                 result = future.get(timeout=10)
-                logger.info(f"Message sent to topic '{topic}' after retry: {result}")
+                logger.info(
+                    f"Message sent to topic '{topic}' after retry: {result}")
                 break
             except Exception as e:
                 if retries == 0:
                     logger.error(f"Failed to send message after retries: {e}")
                     break
 
+
 def main():
     for index in range(10):
         # message = f"Hello Kafka {index}"
-        message = {"key": f"value-{index}", "example": "message"} 
+        message = {"key": f"value-{index}", "example": "message"}
         send_message(producer, 'test', message)
+
 
 if __name__ == "__main__":
     main()
