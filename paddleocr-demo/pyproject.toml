@@ -1,0 +1,28 @@
+[project]
+name = "paddleocr-demo"
+version = "0.1.0"
+description = "Paddle OCR Demo"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.136.3",
+    "paddleocr[doc-parser]>=3.6.0",
+    "paddlepaddle==3.2.1",
+    "python-multipart>=0.0.32",
+    "setuptools>=82.0.1",
+    "uvicorn[standard]>=0.49.0",
+    "langchain==0.3.30",
+]
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+default = true
+
+[[tool.uv.index]]
+name = "paddle-cpu"
+url = "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
+explicit = true
+
+[tool.uv.sources]
+paddlepaddle = { index = "paddle-cpu" }
