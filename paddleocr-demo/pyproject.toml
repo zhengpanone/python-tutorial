@@ -9,7 +9,7 @@ dependencies = [
     "paddleocr[doc-parser]>=3.6.0",
     "paddlepaddle==3.2.1",
     "python-multipart>=0.0.32",
-    "setuptools>=82.0.1",
+    "setuptools>=83.0.0",
     "uvicorn[standard]>=0.49.0",
     "langchain==0.3.30",
 ]
